@@ -15,9 +15,10 @@ import ServiceList from "../services/ServiceList";
 import FeaturedTourList from "../components/Featured-tours/FeaturedTourList";
 import MasonryImagesGallery from "../components/Imagem-gallery/MasonryImagesGallery";
 import Testimonials from "../components/Testimonial/Testimonials";
+import Newslletter from "../shared/Newslletter";
 
 const Home = () => {
-  return  <>
+  return  (<>
 
   {/* Hero section */}
   <section>
@@ -161,7 +162,10 @@ const Home = () => {
     </Container>
   </section>
   {/*testimonial section fim */}
+  <Newslletter/>
+
   </>
+  );
 };
 
 export default Home;
