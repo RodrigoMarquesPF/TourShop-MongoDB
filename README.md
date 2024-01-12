@@ -10,7 +10,7 @@
 <br>
 ``` npm start ```
 <br>
-3 - No backend/infoNeo execute: 
+3 - No backend execute: 
 <br>
 ``` npm install ``` 
 <br>
