@@ -38,7 +38,8 @@ const Login = () => {
                 <img src={userIcon} alt="" />
               </div>
               <h2>Login</h2>
-              <Form>
+
+              <Form onSubmit={handleClick}>
                 <FormGroup>
                   <input type="text" placeholder="Email" required id="email"
                   onChange={handleChange}/>
