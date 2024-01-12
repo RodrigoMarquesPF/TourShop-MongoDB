@@ -1,4 +1,16 @@
 //npm i express mongodb mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs
+/*
+ // .env.example
+
+# Porta para a aplicação
+PORT=4000
+
+# URI de conexão com o MongoDB
+MONGO_URI=your_mongo_uri
+
+# Chave de API para serviços externos
+API_KEY=your_api_key
+ */
 
 
 import express from 'express';
