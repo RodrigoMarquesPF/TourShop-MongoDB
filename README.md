@@ -14,5 +14,5 @@
 <br>
 ``` npm install ``` 
 <br>
-``` npm npm run start-dev ``` 
+``` npm run start-dev ``` 
 <br>
