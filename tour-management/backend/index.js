@@ -1,5 +1,6 @@
 //npm i express mongodb mongoose dotenv cors cookie-parser jsonwebtoken bcryptjs
 /*
+//crie um arquivo .env
  // .env.example
 
 # Porta para a aplicação
