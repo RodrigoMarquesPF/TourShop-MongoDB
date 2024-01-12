@@ -10,6 +10,9 @@ MONGO_URI=your_mongo_uri
 
 # Chave de API para serviços externos
 API_KEY=your_api_key
+
+#Jwt secret
+JWT_SECRET_KEY="aleatorio"
  */
 
 
@@ -21,6 +24,7 @@ import cookieParser from 'cookie-parser';
 
 import tourRoute from './routes/tours.js';
 import userRoute from './routes/user.js';
+import authRoute from './routes/auth.js';
 
 
 dotenv.config();
@@ -53,6 +57,7 @@ const connect = async()=>{
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use('/auth', authRoute);
 app.use('/tours', tourRoute);
 app.use('/users', userRoute);
 
