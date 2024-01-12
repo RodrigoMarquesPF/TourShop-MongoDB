@@ -18,7 +18,7 @@ const Booking = ({tour,avgRating}) => {
         phone:'',
         guestSize:1,
         bookArt:''
-    })
+    });
 
     const handleChange = e => {
         setCredentials(prev => ({
