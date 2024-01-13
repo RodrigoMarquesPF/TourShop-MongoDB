@@ -2,11 +2,11 @@
 import { useState, useEffect } from 'react';
 
 
-const useFetch = (url) =>{
+const useFetch = url =>{
 
     const [data, setData] = useState ([]);
     const [error, setError] = useState ([null]);
-    const [loading, setLoading] = useState (false);
+    const [loading, setLoading] = useState (true);
 
     useEffect(()=>{
 
@@ -17,12 +17,14 @@ const useFetch = (url) =>{
                 const res = await fetch(url);
 
                 if(!res.ok){
-                    
+                    //throw new Error(`Failed to fetch: ${res.statusText}`);
                     setError('failed to fetch');
                     //alert('failed to fetch');
                 }
-                const result = await res.json()
-                setData(result.data);
+                const result = await res.json();
+                console.log('API Response:', result); 
+                setData(result.data || null);
+                //setData(result.data);
                 setLoading(false);
             } catch (err) {
                 setError(err.message);

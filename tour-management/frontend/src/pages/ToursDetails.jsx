@@ -1,27 +1,53 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import '../styles/tour-details.css';
 import {Container, Row, Col, Form, ListGroup} from 'reactstrap';
 import {useParams} from 'react-router-dom';
-import tourData from '../assets/data/tours';
+//import tourData from '../assets/data/tours';
 import calculateAvgRating from './../utils/avgRating';
 import avatar from "../assets/images/avatar.jpg";
 import Booking from "../components/Booking/Booking";
 import Newsletter from "../shared/Newslletter"
+import useFetch from './../hooks/useFetch'
+import { BASE_URL } from './../utils/config'
 
 const ToursDetails = () => {
   
-  const {id} = useParams();
+  const { id } = useParams();
+  console.log('Tour ID:', id);
 
-  const reviewMsgRef =useRef('')
-  const [tourRating, setTourRating] = useState(null)
+  const reviewMsgRef =useRef("");
+  const [tourRating, setTourRating] = useState(null);
 
   //Data static depois vai ter a APIfrom database
-  const tour =tourData.find(tour => tour.id === id);
+  //const tour = tourData.find(tour => tour.id === id);
 
+  const { data:tour, error, loading } = useFetch(`${BASE_URL}/tours/${id}`);
+  //const { tour } = data || {}; // Garantindo que data é um objeto
+  
+  //console.log('API response for Tour Details:', { data, error, loading });
+  console.log('Tour Details:', tour);
+  /*
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+  
+  if (error) {
+    console.error('Error fetching tour details:', error);
+    return <p>Error fetching tour details: {error.message}</p>;
+  }
+  
+  if (!tour) {
+    return <p>Tour not found</p>;
+  }*/
+  
+  // Restante do código...
+  
   //desrtructure properties from the object
 
-  const {photo, title, desc, price, address, reviews, city, distance, maxGroupSize} =
-   tour;
+  const { photo, title, desc, price, address, reviews, city, distance, maxGroupSize } = tour;
+  console.log('Tour Details:', { photo, title, desc, price, address, reviews, city, distance, maxGroupSize });
+  
+   
 
   const {totalRating, avgRating} = calculateAvgRating(reviews);
 
@@ -30,18 +56,29 @@ const ToursDetails = () => {
   const options = {day:"numeric", month:"long", year:"numeric"};
 
   //submit request to the server
-  const submitHandler = e =>{
+  const submitHandler = (e) =>{
     e.preventDefault()
     const reviewText = reviewMsgRef.current.value;
     //alert(`${reviewText}, ${tourRating}`);
 
     //call api
-  }
+  };
+
+  useEffect(()=>{
+      window.scrollTo(0,0)
+  },[tour])
   
   return  <>
     <section>
       <Container>
-        <Row>
+        {
+          loading && <h4 className="text-center pt-5">LOADING ......</h4>
+        }
+        {
+          error && <h4 className="text-center pt-5">{error}</h4>
+        }
+        {
+          !loading &&         <Row>
           <Col lg='8'>
             <div className="tour__content">
               <img src={photo} alt="" />
@@ -140,6 +177,7 @@ const ToursDetails = () => {
             <Booking tour={tour} avgRating={avgRating}/>
           </Col>
         </Row>
+        }
       </Container>
     </section>
     <Newsletter/>
