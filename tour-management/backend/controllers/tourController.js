@@ -131,6 +131,7 @@ export const getTourBySearch = async(req, res) =>{
         const tours = await Tour.find({city, distance:{$gte:distance},
         maxGroupSize:{$gte:maxGroupSize},}).populate("reviews");
         
+        /*
         if (tours.length === 0) {
             // Se a array de tours está vazia, nenhum tour foi encontrado
             res.status(404).json({ success: false, message: 'not found' });
@@ -138,6 +139,13 @@ export const getTourBySearch = async(req, res) =>{
         }
         res.status(200).json({success:true, message:'Successful',
         data:tours})
+        */
+        if (tours.length === 0) {
+            res.status(200).json({ success: true, message: 'No tours found for the given search criteria', data: [] });
+          } else {
+            res.status(200).json({ success: true, message: 'Successful', data: tours });
+          }
+          
         
     } catch (err) {
         res.status(500).json({success:false, message:'not found',
