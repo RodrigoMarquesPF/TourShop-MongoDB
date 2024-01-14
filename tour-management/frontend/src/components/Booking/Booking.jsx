@@ -1,43 +1,79 @@
 
 
-import React,{useState} from 'react'
+import React,{useState , useContext} from 'react'
 import './booking.css'
 import { Form, FormGroup, ListGroup, ListGroupItem, Button } from 'reactstrap';
 
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
+import { BASE_URL } from '../../utils/config';
 
 const Booking = ({tour,avgRating}) => {
 
-    const{price, reviews} = tour;
+    const{price, reviews, title} = tour;
     const navigate = useNavigate()
 
-    const [credentials, setCredentials] = useState({
-        userId:'01', //depois 
-        userEmail:'teste@gmail.com',
+    const {user} = useContext(AuthContext)
+
+    const [booking, setBooking] = useState({
+        userId:user && user._id,
+        userEmail:user && user.email,
+        tourName:title,
         fullName:'',
-        phone:'',
         guestSize:1,
-        bookArt:''
+        phone:'',
+        bookAt:''
     });
 
     const handleChange = e => {
-        setCredentials(prev => ({
+        setBooking(prev => ({
             ...prev,[e.target.id]:e.target.value
         }))
     };
 
 
     const serviceFee =10
-    const totalAmount = Number(price) * Number(credentials.guestSize) +
+    const totalAmount = Number(price) * Number(booking.guestSize) +
     Number(serviceFee)
 
     //send data to the server
 
-    const handleClick = e => {
+    const handleClick = async e => {
         e.preventDefault();
 
+        console.log(booking);
+        
+        try {
+            if(!user || user === undefined || user === null){
+                return alert('Please sing in')
+            }
+    
+            const res = await fetch(`${BASE_URL}/booking`,{
+                method:"post",
+                headers:{
+                    'content-type':'application/json',
+                },
+                credentials:'include',
+                body:JSON.stringify(booking)
+            })
+    
+            const result = await res.json()
+    
+            if(!res.ok){
+                //console.error(result.message);
+                return alert(result.message)
+            }
+            console.log('Booking successful. Response:', result);
+            console.log('Before navigation');
+            navigate("/thank-you");
+            console.log('After navigation');
+        } catch (err) {
+            console.error('Error during booking:', err.message);
+            alert(err.message);
+        }
+
         //console.log(credentials);
-        navigate("/thank-you")
+       
     };
 
   return  (<div className="booking">
@@ -66,7 +102,7 @@ const Booking = ({tour,avgRating}) => {
                     required onChange={handleChange} />
                 </FormGroup>
                 <FormGroup className="d-flex align-items-center gap-3">
-                    <input type="date" placeholder="" id="bookArt"
+                    <input type="date" placeholder="" id="bookAt"
                     required onChange={handleChange} />
                     <input type="number" placeholder="Guest" id="guestSize"
                     required onChange={handleChange} />
