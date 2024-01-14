@@ -18,7 +18,7 @@ export const register = async(req, res) => {
             password:hash,
             photo:req.body.photo
         })
-
+        
         await newUser.save()
 
         res.status(200).json({success:true, message:'Successfully created'})

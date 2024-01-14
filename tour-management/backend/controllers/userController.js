@@ -2,20 +2,35 @@ import User from '../models/User.js'
 
 
 // create new User
-
-export const createUser = async (req, res)=>{
-    const newUser = new User(req.body)
-
+export const createUser = async (req, res) => {
+    const newUser = new User(req.body);
     try {
-        const savedUser = await newUser.save()
-
-        res.status(200).json({success:true, message:'Successfully created',
-        data:savedUser
-        })
         
+        const savedUser = await newUser.save();
+        res.status(200).json({
+            success: true,
+            message: 'Successfully created',
+            data: savedUser
+        });
     } catch (err) {
-        res.status(500).json({success:false, message:'Failed to create. Try again'
-        })
+        console.error(err);
+        console.error('Error during user creation:', err);
+    console.log('Request Body:', req.body);
+
+        // Verificar se o erro contém informações do Mongoose
+        if (err.errors) {
+            res.status(400).json({
+                success: false,
+                message: 'Validation failed',
+                errors: err.errors
+            });
+        } else {
+            res.status(500).json({
+                success: false,
+                message: 'Failed to create. Try again',
+                error: err.message
+            });
+        }
     }
 };
 
